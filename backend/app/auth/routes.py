@@ -10,7 +10,6 @@ async def register_user(data: UserCreate, db: AsyncSession):
     # Check if user exists
     result = await db.execute(select(User).where(User.email == data.email))
     existing = result.scalar_one_or_none()
-
     if existing:
         raise ValueError("Email already registered")
 
@@ -19,6 +18,7 @@ async def register_user(data: UserCreate, db: AsyncSession):
         username=data.username,
         hashed_password=hash_password(data.password)
     )
+    print("user======>",user)
 
     db.add(user)
     await db.commit()
